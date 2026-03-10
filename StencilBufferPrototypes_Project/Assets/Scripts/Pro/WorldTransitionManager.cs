@@ -1,4 +1,5 @@
 using Core.Utils;
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -43,11 +44,28 @@ public class WorldTransitionManager : MonoBehaviour
 
     IEnumerator DebugDelay()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(.5f);
 
-        //InitTransition(allWorldsData[WorldId.blueWorld], allWorldsData[WorldId.redWorld]);
-        InitTransition(WorldId.redWorld, currentWorldId, true);
+        yield return SwapToOutsideWorld(WorldId.redWorld);
+
+        yield return new WaitForSeconds(.5f);
+
+        yield return SwapToInnerWorld(WorldId.blueWorld);
+
+        yield return new WaitForSeconds(.5f);
+
+        yield return SwapToInnerWorld(WorldId.redWorld);
+
+        yield return new WaitForSeconds(.5f);
+
+        yield return SwapToOutsideWorld(WorldId.blueWorld);
     }
+
+    IEnumerator SwapToOutsideWorld(WorldId worldId)
+    { yield return InitTransition(worldId, currentWorldId, true); }
+
+    IEnumerator SwapToInnerWorld(WorldId worldId)
+    { yield return InitTransition(currentWorldId, worldId, false); }
 
     private void SetWorld(WorldId worldId)
     {
@@ -80,7 +98,7 @@ public class WorldTransitionManager : MonoBehaviour
         }
     }
 
-    private void InitTransition(WorldId outterWorldId, WorldId innerWorldId, bool reverse = false)
+    private IEnumerator InitTransition(WorldId outterWorldId, WorldId innerWorldId, bool reverse = false)
     {
         WorldData outterWorld = allWorldsData[outterWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
@@ -111,7 +129,7 @@ public class WorldTransitionManager : MonoBehaviour
         ApplyTransitionLerp(reverse ? 1 : 0, outterWorld, innerWorld);
 
         if (Application.isPlaying)
-            StartCoroutine(PerformTransition(outterWorldId, innerWorldId, reverse));
+            yield return PerformTransition(outterWorldId, innerWorldId, reverse);
     }
 
     private IEnumerator PerformTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)
@@ -134,32 +152,34 @@ public class WorldTransitionManager : MonoBehaviour
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
 
-
-        Material mat = null;
-
         if (reverse)
         {
-            //mat = outerWorld.CubeWorldMaterial;
-
             if (beforeTransition)
+            {
                 SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+                SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+            }
             else
-                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+            {
+                innerWorld.CubeWorldMaterial.DOFade(1, duration);
+                yield return new WaitForSeconds(duration);
+                SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+            }
         }
+        else
+        {
+            if (beforeTransition)
+            {
+                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+                innerWorld.CubeWorldMaterial.DOFade(0, duration);
 
-        //if (mat != null)
-        //{
-        //    float elapsed = 0;
-        //    while (elapsed < duration)
-        //    {
-        //        float lerp = 1 - (elapsed / duration);
-
-        //        SetAlphaToMaterial(mat, lerp);
-
-        //        elapsed += Time.deltaTime;
-        yield return null;
-        //    }
-        //}
+                yield return new WaitForSeconds(duration);
+            }
+            else
+            {
+                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+            }
+        }
     }
 
     private IEnumerator WrapWorlds(WorldData outerWorld, WorldData innerWorld, bool reverse = false, float duration = 3)

@@ -241,8 +241,8 @@ MonoBehaviour:
       value: {fileID: 1910413882}
     - key: 1
       value: {fileID: 1848420557}
-  debugOutterWorldId: 1
-  debugInnerWorldId: 0
+  debugOutterWorldId: 0
+  debugInnerWorldId: 1
   ajustShit: 1
   adjustShitSlider: 0
 --- !u!1 &216340337
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 216340341}
   - component: {fileID: 216340340}
   - component: {fileID: 216340339}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RedFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505374814}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: SimpleShapes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,6 +550,114 @@ Transform:
   - {fileID: 1723722645}
   m_Father: {fileID: 1276847165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &583590281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 583590282}
+  - component: {fileID: 583590285}
+  - component: {fileID: 583590284}
+  - component: {fileID: 583590283}
+  m_Layer: 7
+  m_Name: BlueWorldCube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &583590282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583590281}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000007450581, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1334996554767397469}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &583590283
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583590281}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &583590284
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583590281}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: aae8d819ddb369c4694a569fbcdd1a16, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &583590285
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583590281}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &704946496
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +670,7 @@ GameObject:
   - component: {fileID: 704946500}
   - component: {fileID: 704946499}
   - component: {fileID: 704946498}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -720,7 +828,7 @@ GameObject:
   - component: {fileID: 1193567723}
   - component: {fileID: 1193567722}
   - component: {fileID: 1193567721}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,15 +944,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 3920230066900878273, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -852,15 +960,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: bfbe6543a527c184296435c3c66a7c3b, type: 2}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4576018758538908771, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_Enabled
@@ -912,7 +1020,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: bfbe6543a527c184296435c3c66a7c3b, type: 2}
     - target: {fileID: 8570945255076664678, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8718672400621447691, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalPosition.x
@@ -995,7 +1103,7 @@ GameObject:
   - component: {fileID: 1368633853}
   - component: {fileID: 1368633852}
   - component: {fileID: 1368633851}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BlueFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1133,7 +1241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1579639344}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SimpleShapes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1170,7 +1278,7 @@ GameObject:
   - component: {fileID: 1723722648}
   - component: {fileID: 1723722647}
   - component: {fileID: 1723722646}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BottomBlueFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1278,7 +1386,7 @@ GameObject:
   - component: {fileID: 1817844774}
   - component: {fileID: 1817844773}
   - component: {fileID: 1817844772}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RedBottomFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1503,13 +1611,13 @@ GameObject:
   - component: {fileID: 2118307628}
   - component: {fileID: 2118307627}
   - component: {fileID: 2118307626}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: RedWorldCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2118307625
 Transform:
   m_ObjectHideFlags: 0
@@ -1617,27 +1725,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.03
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.03
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651120192913503759, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.03
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4384652762577943910, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5060127161776321780, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1665,7 +1773,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: fe0a1b52a27404545a0d68302de1619f, type: 2}
     - target: {fileID: 8570945255076664678, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8718672400621447691, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1713,6 +1821,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6252939057185125878, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1579639344}
+    - targetCorrespondingSourceObject: {fileID: 6252939057185125878, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 583590282}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
 --- !u!4 &1334996554767397469 stripped
