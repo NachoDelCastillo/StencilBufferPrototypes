@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-enum WorldId
+public enum WorldId
 {
     blueWorld,
     redWorld,
@@ -18,9 +18,14 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private AnimationCurve transitionCurve;
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
+
     [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
+    [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
 
     [Header("Debug")]
+
+    //[SerializeField] private WorldId debugOutterWorldId;
+
     [SerializeField] private WorldId debugOutterWorldId;
     [SerializeField] private WorldId debugInnerWorldId;
 
@@ -32,6 +37,8 @@ public class WorldTransitionManager : MonoBehaviour
 
     WorldId currentWorldId;
 
+    private bool transitionInProgress = false;
+
     private void Awake() => Initialize();
 
     private void Initialize()
@@ -39,26 +46,65 @@ public class WorldTransitionManager : MonoBehaviour
         // Se inicializa un mundo concreto
         SetWorld(WorldId.blueWorld);
 
-        StartCoroutine(DebugDelay());
+        //StartCoroutine(DebugDelay());
     }
 
-    IEnumerator DebugDelay()
+    //IEnumerator DebugDelay()
+    //{
+    //    yield return new WaitForSeconds(.5f);
+
+    //    yield return SwapToOutsideWorld(WorldId.redWorld);
+
+    //    yield return new WaitForSeconds(.5f);
+
+    //    yield return SwapToInnerWorld(WorldId.blueWorld);
+
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(.5f);
+
+    //        yield return SwapToInnerWorld(WorldId.redWorld);
+
+    //        yield return new WaitForSeconds(.5f);
+
+    //        yield return SwapToInnerWorld(WorldId.blueWorld);
+    //    }
+    //}
+
+    public void GetInsideBox(BoxWorld boxWorld)
     {
-        yield return new WaitForSeconds(.5f);
+        if (!CheckValidTransition()) return;
+        StartCoroutine(GetInsideBox_Coroutine(boxWorld));
+    }
+    IEnumerator GetInsideBox_Coroutine(BoxWorld boxWorld)
+    {
+        yield return SetCameraToTarget(boxWorld.transform);
+        yield return SwapToInnerWorld(boxWorld.WorldId);
+    }
 
-        yield return SwapToOutsideWorld(WorldId.redWorld);
+    public void GetOutsideCurrentBox()
+    {
+        if (!CheckValidTransition()) return;
 
-        yield return new WaitForSeconds(.5f);
+        // Obtener referencia a la caja en la que esta contenida el mundo en el que se esta actualmente
+        // Teletransportarse desde el mundo actual, al mundo en el que esta contenida la caja
+        StartCoroutine(SwapToOutsideWorld(allBoxWorlds[currentWorldId].InsideWorldId));
+    }
 
-        yield return SwapToInnerWorld(WorldId.blueWorld);
+    private bool CheckValidTransition()
+    {
+        bool initialValue = transitionInProgress;
+        transitionInProgress = true;
 
-        yield return new WaitForSeconds(.5f);
+        return !initialValue;
+    }
 
-        yield return SwapToInnerWorld(WorldId.redWorld);
+    private IEnumerator SetCameraToTarget(Transform target, float duration = 2)
+    {
+        WorldData currentWorldData = allWorldsData[currentWorldId];
+        currentWorldData.CameraTarget.DOMove(target.position, duration).SetEase(Ease.InOutCubic);
 
-        yield return new WaitForSeconds(.5f);
-
-        yield return SwapToOutsideWorld(WorldId.blueWorld);
+        yield return new WaitForSeconds(duration);
     }
 
     IEnumerator SwapToOutsideWorld(WorldId worldId)
@@ -122,9 +168,6 @@ public class WorldTransitionManager : MonoBehaviour
         LayerUtils.SetLayerRecursively(outterWorld.Enviroment, 0); // Default layer
         LayerUtils.SetLayerRecursively(innerWorld.Enviroment, GetInnerWorldLayer()); // layer afectada por el Stencil Buffer
 
-        //SetAlphaToMaterial(outterWorld.CubeWorldMaterial, 1);
-        //SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 1);
-
         // Aplicar primer frame
         ApplyTransitionLerp(reverse ? 1 : 0, outterWorld, innerWorld);
 
@@ -138,13 +181,17 @@ public class WorldTransitionManager : MonoBehaviour
         WorldData innerWorld = allWorldsData[innerWorldId];
 
         // Hacer transparentes los world cubes
-        yield return ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse);
+        //yield return ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse);
+        StartCoroutine(ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse));
 
         yield return WrapWorlds(outerWorld, innerWorld, reverse);
 
         yield return ModifyTransparentCubes(outerWorldId, innerWorldId, false, reverse);
 
         SetWorld(reverse ? outerWorldId : innerWorldId);
+
+        // Terminamos transicion
+        transitionInProgress = false;
     }
 
     private IEnumerator ModifyTransparentCubes(WorldId outerWorldId, WorldId innerWorldId, bool beforeTransition, bool reverse = false, float duration = 1)
@@ -250,10 +297,10 @@ public class WorldTransitionManager : MonoBehaviour
     #endregion
 
 #if UNITY_EDITOR
-    #region Debug
 
     private void OnValidate()
     {
+        #region Debug
         if (ajustShit && !Application.isPlaying && debugOutterWorldId != debugInnerWorldId)
         {
             InitTransition(debugOutterWorldId, debugInnerWorldId);
@@ -263,8 +310,12 @@ public class WorldTransitionManager : MonoBehaviour
             foreach (var pair in allWorldsData)
                 SetAlphaToMaterial(pair.Value.CubeWorldMaterial, 0);
         }
+        #endregion
+
+        // Settear los WorldId de cada worldData, de esta forma solo los setteo una unica vez pero los worldData saben que id representan
+        foreach (var pair in allWorldsData)
+            pair.Value.SetWorldId(pair.Key);
     }
 
-    #endregion
 #endif
 }

@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class WorldData : MonoBehaviour
 {
+    // No settear esto a mano, se settea desde el WorldTransitionManager
+    private WorldId worldId;
+
     [Header("References")]
 
     [SerializeField] private Camera cam;
+
+    [Tooltip("Pivote desde donde sale la camara y todo lo demas")]
+    [SerializeField] private Transform cameraTarget;
 
     [Tooltip("Referencia a la mascara cubo de la camara de este mundo")]
     [SerializeField] private GameObject cubeMask;
@@ -21,7 +27,12 @@ public class WorldData : MonoBehaviour
     [Tooltip("Material que usa el cubo")]
     [SerializeField] private Material cubeWorldMaterial;
 
+
+    public WorldId WorldId => worldId;
+    public void SetWorldId(WorldId worldId) => this.worldId = worldId;
+
     public Camera Cam => cam;
+    public Transform CameraTarget => cameraTarget;
     public Transform CubeMaskZoom => cubeMaskZoom;
     public Transform WorldZoom => worldZoom;
     public Transform Enviroment => enviroment;

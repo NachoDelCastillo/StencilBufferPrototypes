@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 7384724336651673872}
+  cameraTarget: {fileID: 6865008109696272913}
   cubeMask: {fileID: 6964730942388987982}
   cubeMaskZoom: {fileID: 2651120192913503759}
   worldZoom: {fileID: 4384652762577943910}
@@ -287,7 +288,6 @@ GameObject:
   - component: {fileID: 5060127161776321780}
   - component: {fileID: 6200908025287018601}
   - component: {fileID: 5429847859699703895}
-  - component: {fileID: 4260254544326457509}
   - component: {fileID: 2532958567089091582}
   m_Layer: 0
   m_Name: CubeMask
@@ -364,27 +364,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4260254544326457509
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6964730942388987982}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2532958567089091582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +419,6 @@ GameObject:
   - component: {fileID: 5390697350451304773}
   - component: {fileID: 4682948543165205567}
   - component: {fileID: 3920230066900878273}
-  - component: {fileID: 1647608258395616875}
   - component: {fileID: 5143893607657993245}
   m_Layer: 0
   m_Name: CubeMaskCover
@@ -517,27 +495,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1647608258395616875
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7957570336886007309}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5143893607657993245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,7 +582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6865008109696272913}
   m_Layer: 0
-  m_Name: CameraLookAtTarget
+  m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
