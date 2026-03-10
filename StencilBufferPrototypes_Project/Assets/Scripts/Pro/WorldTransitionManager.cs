@@ -26,7 +26,7 @@ public class WorldTransitionManager : MonoBehaviour
     {
         transitionLerp = Mathf.Clamp01(transitionLerp);
 
-        // Zoom de la camara antigua
+        // Cuadrar el mismo zoom en la camara antigua y en la nueva
         float startZoom = 1f;
         float endZoom = .03f;
         // Los dos pivotes estan justo en medio del World Cube, les setteamos exactamente la misma escala
@@ -34,11 +34,13 @@ public class WorldTransitionManager : MonoBehaviour
         toWorld.CubeMaskZoom.localScale = Mathf.Lerp(startZoom, endZoom, transitionLerp) * Vector3.one;
 
 
-        float tinyWorldEffectStartZoom = 5f;
-        float tinyWorldEffectEndZoom = 1f;
+        // Camara alejada del mundo al que se esta entrando al inicio y poco a poco se acerca hasta ajustaste a la camara de juego (worldZoom = 1)
+        float startWorldZoom = 5f;
+        float endWorldZoom = 1f;
 
+        // Pasar el lerp por una curva
         float t = worldZoomCurve.Evaluate(transitionLerp);
-        float scale = Mathf.Lerp(tinyWorldEffectStartZoom, tinyWorldEffectEndZoom, t);
+        float scale = Mathf.Lerp(startWorldZoom, endWorldZoom, t);
 
         toWorld.WorldZoom.localScale = Vector3.one * scale;
     }
