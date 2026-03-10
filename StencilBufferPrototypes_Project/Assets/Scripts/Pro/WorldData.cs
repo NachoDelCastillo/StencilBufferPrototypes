@@ -15,6 +15,15 @@ public class WorldData : MonoBehaviour
     [Tooltip("Controla como de cerca esta la camara del mundo, manteniendo igual al cubo mascara, tiene el pivote en el target de la camara")]
     [SerializeField] private Transform worldZoom;
 
+    [Tooltip("Referencia a la mascara cubo de la camara de este mundo")]
+    [SerializeField] private Transform enviroment;
+
+    [Tooltip("Material que usa el cubo")]
+    [SerializeField] private Material cubeWorldMaterial;
+
+    public Camera Cam => cam;
     public Transform CubeMaskZoom => cubeMaskZoom;
     public Transform WorldZoom => worldZoom;
+    public Transform Enviroment => enviroment;
+    public Material CubeWorldMaterial => cubeWorldMaterial;
 }
