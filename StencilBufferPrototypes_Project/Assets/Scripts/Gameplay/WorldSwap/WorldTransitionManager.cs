@@ -18,7 +18,6 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private AnimationCurve transitionCurve;
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
-    [SerializeField] private WorldData auxWorldData;
 
      [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
     [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
@@ -39,6 +38,8 @@ public class WorldTransitionManager : MonoBehaviour
     WorldId currentWorldId;
 
     private bool transitionInProgress = false;
+
+    private WorldData auxWorldData;
 
     private void Awake() => Initialize();
 
@@ -150,6 +151,9 @@ public class WorldTransitionManager : MonoBehaviour
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
 
+        if (outerWorldId == innerWorldId)
+            outerWorld = auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
+
         outerWorld.Cam.enabled = true;
         innerWorld.Cam.enabled = true;
 
@@ -188,6 +192,9 @@ public class WorldTransitionManager : MonoBehaviour
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
 
+        if (outerWorldId == innerWorldId)
+            outerWorld = auxWorldData;
+
         // Hacer transparentes los world cubes
         //yield return ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse);
         StartCoroutine(ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse));
@@ -200,12 +207,17 @@ public class WorldTransitionManager : MonoBehaviour
 
         // Terminamos transicion
         transitionInProgress = false;
+        Destroy(auxWorldData.gameObject);
+        auxWorldData = null;
     }
 
     private IEnumerator ModifyTransparentCubes(WorldId outerWorldId, WorldId innerWorldId, bool beforeTransition, bool reverse = false, float duration = 1)
     {
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
+
+        if (outerWorldId == innerWorldId)
+            outerWorld = auxWorldData;
 
         if (reverse)
         {
