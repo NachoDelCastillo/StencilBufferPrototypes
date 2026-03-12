@@ -18,8 +18,9 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private AnimationCurve transitionCurve;
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
+    [SerializeField] private WorldData auxWorldData;
 
-    [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
+     [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
     [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
 
     [Header("Debug")]
@@ -144,16 +145,16 @@ public class WorldTransitionManager : MonoBehaviour
         }
     }
 
-    private IEnumerator InitTransition(WorldId outterWorldId, WorldId innerWorldId, bool reverse = false)
+    private IEnumerator InitTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)
     {
-        WorldData outterWorld = allWorldsData[outterWorldId];
+        WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
 
-        outterWorld.Cam.enabled = true;
+        outerWorld.Cam.enabled = true;
         innerWorld.Cam.enabled = true;
 
         // Obtener los datos adicionales de URP
-        var baseData = outterWorld.Cam.GetUniversalAdditionalCameraData();
+        var baseData = outerWorld.Cam.GetUniversalAdditionalCameraData();
         var overlayData = innerWorld.Cam.GetUniversalAdditionalCameraData();
 
         // Configurar tipos
@@ -165,14 +166,21 @@ public class WorldTransitionManager : MonoBehaviour
         baseData.cameraStack.Add(innerWorld.Cam);
 
         // Settear los layers
-        LayerUtils.SetLayerRecursively(outterWorld.Enviroment, 0); // Default layer
+        LayerUtils.SetLayerRecursively(outerWorld.Enviroment, 0); // Default layer
         LayerUtils.SetLayerRecursively(innerWorld.Enviroment, GetInnerWorldLayer()); // layer afectada por el Stencil Buffer
 
         // Aplicar primer frame
-        ApplyTransitionLerp(reverse ? 1 : 0, outterWorld, innerWorld);
+        ApplyTransitionLerp(reverse ? 1 : 0, outerWorld, innerWorld);
+
+        // Fijar la camara en el enterSpot del nuevo mundo
+        if (!reverse)
+            innerWorld.CameraTarget.position = innerWorld.EnterSpot.position;
+        // Fijar la camara en la caja del mundo actual en el nuevo mundo
+        else
+            outerWorld.CameraTarget.position = allBoxWorlds[innerWorldId].transform.position;
 
         if (Application.isPlaying)
-            yield return PerformTransition(outterWorldId, innerWorldId, reverse);
+            yield return PerformTransition(outerWorldId, innerWorldId, reverse);
     }
 
     private IEnumerator PerformTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)

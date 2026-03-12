@@ -27,6 +27,9 @@ public class WorldData : MonoBehaviour
     [Tooltip("Material que usa el cubo")]
     [SerializeField] private Material cubeWorldMaterial;
 
+    [Tooltip("Lugar al que se accede cuando se entra a un mundo desde una caja")]
+    [SerializeField] private Transform enterSpot;
+
 
     public WorldId WorldId => worldId;
     public void SetWorldId(WorldId worldId) => this.worldId = worldId;
@@ -37,4 +40,5 @@ public class WorldData : MonoBehaviour
     public Transform WorldZoom => worldZoom;
     public Transform Enviroment => enviroment;
     public Material CubeWorldMaterial => cubeWorldMaterial;
+    public Transform EnterSpot => enterSpot;
 }
