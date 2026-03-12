@@ -49,10 +49,13 @@ MonoBehaviour:
   cam: {fileID: 7384724336651673872}
   cameraTarget: {fileID: 6865008109696272913}
   cubeMask: {fileID: 6964730942388987982}
+  cubeMaskCover: {fileID: 3920230066900878273}
   cubeMaskZoom: {fileID: 2651120192913503759}
   worldZoom: {fileID: 4384652762577943910}
   enviroment: {fileID: 6252939057185125878}
   cubeWorldMaterial: {fileID: 0}
+  auxCubeWorldMaterial: {fileID: 0}
+  enterSpot: {fileID: 0}
 --- !u!1 &1383467750123049796
 GameObject:
   m_ObjectHideFlags: 0

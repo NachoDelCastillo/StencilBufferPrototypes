@@ -464,6 +464,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216340337}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &260975080 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3920230066900878273, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
+  m_PrefabInstance: {fileID: 1276847161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &272861207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,9 +1138,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 85143541}
     - target: {fileID: 7747310501632029752, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
+      propertyPath: cubeMaskCover
+      value: 
+      objectReference: {fileID: 260975080}
+    - target: {fileID: 7747310501632029752, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: cubeWorldMaterial
       value: 
       objectReference: {fileID: 2100000, guid: bfbe6543a527c184296435c3c66a7c3b, type: 2}
+    - target: {fileID: 7747310501632029752, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
+      propertyPath: auxCubeWorldMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 90b9c845cb028b74db5d394aa8d66c79, type: 2}
     - target: {fileID: 8570945255076664678, guid: 1ae1540820d086f4ca73768a97bddf02, type: 3}
       propertyPath: m_Layer
       value: 0

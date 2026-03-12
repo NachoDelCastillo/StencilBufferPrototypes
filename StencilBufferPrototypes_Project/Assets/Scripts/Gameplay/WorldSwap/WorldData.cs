@@ -15,6 +15,9 @@ public class WorldData : MonoBehaviour
     [Tooltip("Referencia a la mascara cubo de la camara de este mundo")]
     [SerializeField] private GameObject cubeMask;
 
+    [Tooltip("Cover de la mascara cubo")]
+    [SerializeField] private Renderer cubeMaskCover;
+
     [Tooltip("Controla como de cerca esta la mascara del cubo de la camara, tiene el pivote en la mascara del cubo")]
     [SerializeField] private Transform cubeMaskZoom;
 
@@ -26,6 +29,9 @@ public class WorldData : MonoBehaviour
 
     [Tooltip("Material que usa el cubo")]
     [SerializeField] private Material cubeWorldMaterial;
+
+    [Tooltip("Material que usa el cubo")]
+    [SerializeField] private Material auxCubeWorldMaterial;
 
     [Tooltip("Lugar al que se accede cuando se entra a un mundo desde una caja")]
     [SerializeField] private Transform enterSpot;
@@ -40,5 +46,12 @@ public class WorldData : MonoBehaviour
     public Transform WorldZoom => worldZoom;
     public Transform Enviroment => enviroment;
     public Material CubeWorldMaterial => cubeWorldMaterial;
+    public Material AuxCubeWorldMaterial => auxCubeWorldMaterial;
     public Transform EnterSpot => enterSpot;
+
+    public void SetAuxWorld(WorldData originalWorldData)
+    {
+        this.cubeWorldMaterial = originalWorldData.AuxCubeWorldMaterial;
+        cubeMaskCover.material = this.cubeWorldMaterial;
+    }
 }

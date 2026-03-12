@@ -19,7 +19,7 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
 
-     [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
+    [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
     [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
 
     [Header("Debug")]
@@ -150,9 +150,12 @@ public class WorldTransitionManager : MonoBehaviour
     {
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
-
         if (outerWorldId == innerWorldId)
-            outerWorld = auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
+        {
+            auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
+            auxWorldData.SetAuxWorld(outerWorld);
+            outerWorld = auxWorldData;
+        }
 
         outerWorld.Cam.enabled = true;
         innerWorld.Cam.enabled = true;
@@ -184,41 +187,34 @@ public class WorldTransitionManager : MonoBehaviour
             outerWorld.CameraTarget.position = allBoxWorlds[innerWorldId].transform.position;
 
         if (Application.isPlaying)
-            yield return PerformTransition(outerWorldId, innerWorldId, reverse);
+            yield return PerformTransition(outerWorld, innerWorld, reverse);
     }
 
-    private IEnumerator PerformTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)
+    private IEnumerator PerformTransition(WorldData outerWorld, WorldData innerWorld, bool reverse = false)
     {
-        WorldData outerWorld = allWorldsData[outerWorldId];
-        WorldData innerWorld = allWorldsData[innerWorldId];
-
-        if (outerWorldId == innerWorldId)
-            outerWorld = auxWorldData;
-
         // Hacer transparentes los world cubes
         //yield return ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse);
-        StartCoroutine(ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse));
+        StartCoroutine(ModifyTransparentCubes(outerWorld, innerWorld, true, reverse));
 
         yield return WrapWorlds(outerWorld, innerWorld, reverse);
 
-        yield return ModifyTransparentCubes(outerWorldId, innerWorldId, false, reverse);
+        yield return ModifyTransparentCubes(outerWorld, innerWorld, false, reverse);
 
-        SetWorld(reverse ? outerWorldId : innerWorldId);
+        SetWorld(reverse ? outerWorld.WorldId : innerWorld.WorldId);
 
         // Terminamos transicion
         transitionInProgress = false;
-        Destroy(auxWorldData.gameObject);
-        auxWorldData = null;
+
+        // Si se ha hecho uso de un mundo auxiliar, destruirlo
+        if (auxWorldData != null)
+        {
+            Destroy(auxWorldData.gameObject);
+            auxWorldData = null;
+        }
     }
 
-    private IEnumerator ModifyTransparentCubes(WorldId outerWorldId, WorldId innerWorldId, bool beforeTransition, bool reverse = false, float duration = 1)
+    private IEnumerator ModifyTransparentCubes(WorldData outerWorld, WorldData innerWorld, bool beforeTransition, bool reverse = false, float duration = 1)
     {
-        WorldData outerWorld = allWorldsData[outerWorldId];
-        WorldData innerWorld = allWorldsData[innerWorldId];
-
-        if (outerWorldId == innerWorldId)
-            outerWorld = auxWorldData;
-
         if (reverse)
         {
             if (beforeTransition)
