@@ -153,8 +153,12 @@ public class WorldTransitionManager : MonoBehaviour
         if (outerWorldId == innerWorldId)
         {
             auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
-            auxWorldData.SetAuxWorld(outerWorld);
-            outerWorld = auxWorldData;
+            //auxWorldData.SetAuxWorld(outerWorld);
+
+            if (reverse)
+                innerWorld = auxWorldData;
+            else
+                outerWorld = auxWorldData;
         }
 
         outerWorld.Cam.enabled = true;
@@ -213,34 +217,44 @@ public class WorldTransitionManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ModifyTransparentCubes(WorldData outerWorld, WorldData innerWorld, bool beforeTransition, bool reverse = false, float duration = 1)
+    private IEnumerator ModifyTransparentCubes(WorldData outerWorld, WorldData innerWorld, bool beforeTransition, bool reverse = false, float duration = 1.5f)
     {
         if (reverse)
         {
             if (beforeTransition)
             {
-                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
-                SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+                //SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+                //SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
             }
             else
             {
-                innerWorld.CubeWorldMaterial.DOFade(1, duration);
+                innerWorld.CubeMaskCoverAnimator.Close(duration);
                 yield return new WaitForSeconds(duration);
-                SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+
+                //outerWorld.CubeMaskCoverAnimator.SetOpenLerp(1);
+
+                //yield return new WaitForSeconds(duration);
+
+                //innerWorld.CubeWorldMaterial.DOFade(1, duration);
+                //yield return new WaitForSeconds(duration);
+                //SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
             }
         }
         else
         {
             if (beforeTransition)
             {
-                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
-                innerWorld.CubeWorldMaterial.DOFade(0, duration);
+                //SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+                //innerWorld.CubeWorldMaterial.DOFade(0, duration);
+
+                innerWorld.CubeMaskCoverAnimator.Open(duration);
+                outerWorld.CubeMaskCoverAnimator.SetOpenLerp(1);
 
                 yield return new WaitForSeconds(duration);
             }
             else
             {
-                SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
+                // xd
             }
         }
     }

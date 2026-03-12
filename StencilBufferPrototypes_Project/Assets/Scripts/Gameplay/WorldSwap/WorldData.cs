@@ -18,6 +18,9 @@ public class WorldData : MonoBehaviour
     [Tooltip("Cover de la mascara cubo")]
     [SerializeField] private Renderer cubeMaskCover;
 
+    [Tooltip("Cover de la mascara cubo")]
+    [SerializeField] private CubeMaskCoverAnimator cubeMaskCoverAnimator;
+
     [Tooltip("Controla como de cerca esta la mascara del cubo de la camara, tiene el pivote en la mascara del cubo")]
     [SerializeField] private Transform cubeMaskZoom;
 
@@ -42,6 +45,7 @@ public class WorldData : MonoBehaviour
 
     public Camera Cam => cam;
     public Transform CameraTarget => cameraTarget;
+    public CubeMaskCoverAnimator CubeMaskCoverAnimator => cubeMaskCoverAnimator;
     public Transform CubeMaskZoom => cubeMaskZoom;
     public Transform WorldZoom => worldZoom;
     public Transform Enviroment => enviroment;
@@ -49,9 +53,9 @@ public class WorldData : MonoBehaviour
     public Material AuxCubeWorldMaterial => auxCubeWorldMaterial;
     public Transform EnterSpot => enterSpot;
 
-    public void SetAuxWorld(WorldData originalWorldData)
-    {
-        this.cubeWorldMaterial = originalWorldData.AuxCubeWorldMaterial;
-        cubeMaskCover.material = this.cubeWorldMaterial;
-    }
+    //public void SetAuxWorld(WorldData originalWorldData)
+    //{
+    //    this.cubeWorldMaterial = originalWorldData.AuxCubeWorldMaterial;
+    //    cubeMaskCover.material = this.cubeWorldMaterial;
+    //}
 }
