@@ -223,38 +223,28 @@ public class WorldTransitionManager : MonoBehaviour
         {
             if (beforeTransition)
             {
-                //SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
-                //SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+                innerWorld.CubeMaskCoverAnimator.SetVisualActive(true);
+                innerWorld.CubeMaskCoverAnimator.SetOpenLerp(1);
             }
             else
             {
-                innerWorld.CubeMaskCoverAnimator.Close(duration);
-                yield return new WaitForSeconds(duration);
+                yield return innerWorld.CubeMaskCoverAnimator.Close(duration);
+                innerWorld.CubeMaskCoverAnimator.SetVisualActive(false);
 
-                //outerWorld.CubeMaskCoverAnimator.SetOpenLerp(1);
-
-                //yield return new WaitForSeconds(duration);
-
-                //innerWorld.CubeWorldMaterial.DOFade(1, duration);
-                //yield return new WaitForSeconds(duration);
-                //SetAlphaToMaterial(innerWorld.CubeWorldMaterial, 0);
+                outerWorld.CubeMaskCoverAnimator.SetVisualActive(false);
             }
         }
         else
         {
             if (beforeTransition)
             {
-                //SetAlphaToMaterial(outerWorld.CubeWorldMaterial, 0);
-                //innerWorld.CubeWorldMaterial.DOFade(0, duration);
+                innerWorld.CubeMaskCoverAnimator.SetVisualActive(true);
 
-                innerWorld.CubeMaskCoverAnimator.Open(duration);
-                outerWorld.CubeMaskCoverAnimator.SetOpenLerp(1);
-
-                yield return new WaitForSeconds(duration);
+                yield return innerWorld.CubeMaskCoverAnimator.Open(duration);
             }
             else
             {
-                // xd
+                innerWorld.CubeMaskCoverAnimator.SetVisualActive(false);
             }
         }
     }

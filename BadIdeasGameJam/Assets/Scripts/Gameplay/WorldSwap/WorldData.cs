@@ -53,9 +53,6 @@ public class WorldData : MonoBehaviour
     public Material AuxCubeWorldMaterial => auxCubeWorldMaterial;
     public Transform EnterSpot => enterSpot;
 
-    //public void SetAuxWorld(WorldData originalWorldData)
-    //{
-    //    this.cubeWorldMaterial = originalWorldData.AuxCubeWorldMaterial;
-    //    cubeMaskCover.material = this.cubeWorldMaterial;
-    //}
+
+    private void Awake() => cubeMaskCoverAnimator.SetVisualActive(false);
 }
