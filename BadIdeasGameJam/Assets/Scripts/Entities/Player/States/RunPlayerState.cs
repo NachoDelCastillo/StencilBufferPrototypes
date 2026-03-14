@@ -1,5 +1,4 @@
 ﻿using Core.FSM;
-using UnityEngine;
 
 namespace Game.Entities.Player.States
 {

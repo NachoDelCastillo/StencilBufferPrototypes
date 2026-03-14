@@ -40,6 +40,11 @@ public class WorldData : MonoBehaviour
     [SerializeField] private Transform enterSpot;
 
 
+    [SerializeField] private bool calculateCameraOffset;
+    [SerializeField] private Vector3 minOffsetFromCamera;
+    //static public Vector3 MinOffsetFromCamera => minOffsetFromCamera;
+
+
     public WorldId WorldId => worldId;
     public void SetWorldId(WorldId worldId) => this.worldId = worldId;
 
@@ -55,4 +60,12 @@ public class WorldData : MonoBehaviour
 
 
     private void Awake() => cubeMaskCoverAnimator.SetVisualActive(false);
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (calculateCameraOffset)
+            minOffsetFromCamera = cameraTarget.position - Cam.transform.position;
+    }
+#endif
 }

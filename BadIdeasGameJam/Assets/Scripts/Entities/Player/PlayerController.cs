@@ -54,6 +54,7 @@ namespace Game.Entities.Player
             stateMachine.AddState(new IdlePlayerState(stateMachine, ctx));
             stateMachine.AddState(new RunPlayerState(stateMachine, ctx));
             stateMachine.AddState(new AirPlayerState(stateMachine, ctx));
+            stateMachine.AddState(new TeleportingState(stateMachine, ctx));
         }
 
         /// <summary>
@@ -123,6 +124,13 @@ namespace Game.Entities.Player
             //Debug.Log("JumpBuffer = " + ctx.JumpBuffer);
             //Debug.Log("CoyoteBuffer = " + ctx.CoyoteBuffer);
         }
+
+        #endregion
+
+        #region Interactions
+
+        public void EnterTeleport() => ctx.EnterTeleport();
+        public void ExitTeleport() => ctx.ExitTeleport();
 
         #endregion
 

@@ -241,5 +241,19 @@ namespace Game.Entities.Player
         }
 
         #endregion
+
+        #region Teleport
+
+        public void EnterTeleport()
+        {
+            StateMachine.ChangeState<TeleportingState>();
+        }
+
+        public void ExitTeleport()
+        {
+            StateMachine.ChangeState<AirPlayerState>();
+        }
+
+        #endregion
     }
 }

@@ -21,6 +21,8 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
 
+    [SerializeField] private Vector3 minOffsetFromCamera;
+
     [Header("References")]
     [SerializeField] private PlayerController player;
     [SerializeField] private Camera playerCamera;
@@ -120,6 +122,7 @@ public class WorldTransitionManager : MonoBehaviour
                 var baseData = worldData.Cam.GetUniversalAdditionalCameraData();
                 baseData.renderType = CameraRenderType.Base;
                 baseData.cameraStack.Clear();
+                baseData.cameraStack.Add(playerCamera);
 
                 float startZoom = 1f;
                 float endZoom = .03f;
@@ -140,25 +143,17 @@ public class WorldTransitionManager : MonoBehaviour
 
     private IEnumerator InitTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)
     {
-
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
 
-        DebugCanvas.Instance.SetDebugText(outerWorld.WorldId.ToString(), 0);
-        DebugCanvas.Instance.SetDebugText(innerWorld.WorldId.ToString(), 1);
-
-        //DebugCanvas.Instance.SetDebugText(outerWorldId.ToString(), 0);
-        //DebugCanvas.Instance.SetDebugText(innerWorldId.ToString(), 1);
-
         bool enterAuxShit = outerWorldId == innerWorldId;
 
-        string debugText = enterAuxShit ? "enterAuxShit TRUE" : "enterAuxShit FALSE";
-        DebugCanvas.Instance.SetDebugText(debugText, 2);
+        //string debugText = enterAuxShit ? "enterAuxShit TRUE" : "enterAuxShit FALSE";
+        //DebugCanvas.Instance.SetDebugText(debugText, 2);
 
         if (enterAuxShit)
         {
             auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
-            //auxWorldData.SetAuxWorld(outerWorld);
 
             if (reverse)
                 innerWorld = auxWorldData;
@@ -166,8 +161,18 @@ public class WorldTransitionManager : MonoBehaviour
                 outerWorld = auxWorldData;
         }
 
-        //DebugCanvas.Instance.SetDebugText(outerWorld.WorldId.ToString(), 0);
-        //DebugCanvas.Instance.SetDebugText(innerWorld.WorldId.ToString(), 1);
+        StartCoroutine(SetUpPlayerForTransition(outerWorld, innerWorld, reverse));
+
+        // Aplicar primer frame
+        ApplyTransitionLerp(reverse ? 1 : 0, outerWorld, innerWorld);
+
+        // Fijar la camara en el enterSpot del nuevo mundo
+        if (!reverse)
+            innerWorld.CameraTarget.position = innerWorld.EnterSpot.position;
+        // Fijar la camara en la caja del mundo actual en el nuevo mundo
+        else
+            outerWorld.CameraTarget.position = allBoxWorlds[innerWorldId].transform.position;
+
 
         outerWorld.Cam.enabled = true;
         innerWorld.Cam.enabled = true;
@@ -183,31 +188,58 @@ public class WorldTransitionManager : MonoBehaviour
         // Añadir la camara overlay al stack de la camara base
         baseData.cameraStack.Clear();
         baseData.cameraStack.Add(innerWorld.Cam);
+        baseData.cameraStack.Add(playerCamera);
 
         // Settear los layers
         LayerUtils.SetLayerRecursively(outerWorld.Enviroment, 0); // Default layer
         LayerUtils.SetLayerRecursively(innerWorld.Enviroment, GetInnerWorldLayer()); // layer afectada por el Stencil Buffer
 
-        // Aplicar primer frame
-        ApplyTransitionLerp(reverse ? 1 : 0, outerWorld, innerWorld);
-
-        // Fijar la camara en el enterSpot del nuevo mundo
-        if (!reverse)
-            innerWorld.CameraTarget.position = innerWorld.EnterSpot.position;
-        // Fijar la camara en la caja del mundo actual en el nuevo mundo
-        else
-            outerWorld.CameraTarget.position = allBoxWorlds[innerWorldId].transform.position;
-
-        SetUpPlayerForTransition();
-
         if (Application.isPlaying)
             yield return PerformTransition(outerWorld, innerWorld, reverse);
     }
 
-    private void SetUpPlayerForTransition()
+    private IEnumerator SetUpPlayerForTransition(WorldData outerWorld, WorldData innerWorld, bool reverse)
     {
-        //player
-        //playerCamera
+        player.EnterTeleport();
+
+        Vector3 offset = player.transform.position - Camera.main.transform.position;
+        player.transform.position = playerCamera.transform.position + offset;
+
+        //yield return new WaitForSeconds(1);
+
+        // Teletransportar al player al enter spot del mundo al que estas entrando
+        if (!reverse)
+        {
+            Vector3 landingSpotInFakeWorld = playerCamera.transform.position + minOffsetFromCamera; // + worldData.EnterSpot.localPosition;
+
+            float duration = 2.5f;
+            player.transform.DOMove(landingSpotInFakeWorld, duration).SetEase(Ease.InOutCubic);
+            //player.transform.DORotate(player.transform.rotation.eulerAngles + Vector3.up * 360 * 2, duration, RotateMode.FastBeyond360);
+            //player.transform.DORotate(Vector3.up * 360 * 3, duration, RotateMode.FastBeyond360);
+
+            yield return new WaitForSeconds(3.6f);
+
+            player.transform.DOKill(true);
+            player.transform.position = innerWorld.EnterSpot.position;
+        }
+
+        // Teletransportar al player a encima de la caja del mundo del que has salido
+        else
+        {
+            Vector3 landingSpotInFakeWorld = playerCamera.transform.position + minOffsetFromCamera + Vector3.up * 1;
+
+            float duration = 3.5f;
+            player.transform.DOMove(landingSpotInFakeWorld, duration).SetEase(Ease.InOutCubic);
+            //player.transform.DORotate(player.transform.rotation.eulerAngles + Vector3.up * 360 * 2, duration, RotateMode.FastBeyond360);
+            //player.transform.DORotate(Vector3.up * 360 * 3, duration, RotateMode.FastBeyond360);
+
+            yield return new WaitForSeconds(4.6f);
+
+            player.transform.DOKill(true);
+            player.transform.position = allBoxWorlds[innerWorld.WorldId].transform.position + Vector3.up * 1;
+        }
+
+        player.ExitTeleport();
     }
 
     #endregion
