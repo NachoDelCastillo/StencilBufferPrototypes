@@ -3,7 +3,7 @@ using UnityEngine;
 public class WorldData : MonoBehaviour
 {
     // No settear esto a mano, se settea desde el WorldTransitionManager
-    private WorldId worldId;
+    [SerializeField, HideInInspector] private WorldId worldId;
 
     [Header("References")]
 

@@ -1,5 +1,6 @@
 using Core.Utils;
 using DG.Tweening;
+using Game.Entities.Player;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -10,21 +11,23 @@ public enum WorldId
     redWorld,
     greenWorld
 }
-//[ExecuteAlways]
 public class WorldTransitionManager : MonoBehaviour
 {
+    #region Inspector
+
     [Header("Parameters")]
     [SerializeField, Range(0, 1f)] private float transitionLerp;
     [SerializeField] private AnimationCurve transitionCurve;
     [SerializeField] private AnimationCurve worldZoomCurve;
     [SerializeField] private LayerMask innerWorldLayer;
 
+    [Header("References")]
+    [SerializeField] private PlayerController player;
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
     [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
 
     [Header("Debug")]
-
-    //[SerializeField] private WorldId debugOutterWorldId;
 
     [SerializeField] private WorldId debugOutterWorldId;
     [SerializeField] private WorldId debugInnerWorldId;
@@ -32,7 +35,10 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private bool ajustShit;
     [SerializeField, Range(0, 1f)] private float adjustShitSlider;
 
-    // Variables
+    #endregion
+
+    #region Variables
+
     private int innerWorldLayerIndex = -1;
 
     WorldId currentWorldId;
@@ -41,37 +47,21 @@ public class WorldTransitionManager : MonoBehaviour
 
     private WorldData auxWorldData;
 
+    #endregion
+
+    #region Initialize
+
     private void Awake() => Initialize();
 
     private void Initialize()
     {
         // Se inicializa un mundo concreto
         SetWorld(WorldId.blueWorld);
-
-        //StartCoroutine(DebugDelay());
     }
 
-    //IEnumerator DebugDelay()
-    //{
-    //    yield return new WaitForSeconds(.5f);
+    #endregion
 
-    //    yield return SwapToOutsideWorld(WorldId.redWorld);
-
-    //    yield return new WaitForSeconds(.5f);
-
-    //    yield return SwapToInnerWorld(WorldId.blueWorld);
-
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(.5f);
-
-    //        yield return SwapToInnerWorld(WorldId.redWorld);
-
-    //        yield return new WaitForSeconds(.5f);
-
-    //        yield return SwapToInnerWorld(WorldId.blueWorld);
-    //    }
-    //}
+    #region Transition Setup
 
     public void GetInsideBox(BoxWorld boxWorld)
     {
@@ -119,6 +109,8 @@ public class WorldTransitionManager : MonoBehaviour
     {
         currentWorldId = worldId;
 
+        DebugCanvas.Instance.SetDebugText(currentWorldId.ToString());
+
         foreach (var pair in allWorldsData)
         {
             WorldData worldData = pair.Value;
@@ -148,9 +140,22 @@ public class WorldTransitionManager : MonoBehaviour
 
     private IEnumerator InitTransition(WorldId outerWorldId, WorldId innerWorldId, bool reverse = false)
     {
+
         WorldData outerWorld = allWorldsData[outerWorldId];
         WorldData innerWorld = allWorldsData[innerWorldId];
-        if (outerWorldId == innerWorldId)
+
+        DebugCanvas.Instance.SetDebugText(outerWorld.WorldId.ToString(), 0);
+        DebugCanvas.Instance.SetDebugText(innerWorld.WorldId.ToString(), 1);
+
+        //DebugCanvas.Instance.SetDebugText(outerWorldId.ToString(), 0);
+        //DebugCanvas.Instance.SetDebugText(innerWorldId.ToString(), 1);
+
+        bool enterAuxShit = outerWorldId == innerWorldId;
+
+        string debugText = enterAuxShit ? "enterAuxShit TRUE" : "enterAuxShit FALSE";
+        DebugCanvas.Instance.SetDebugText(debugText, 2);
+
+        if (enterAuxShit)
         {
             auxWorldData = Instantiate(outerWorld, new Vector3(0, 0, 600), Quaternion.identity);
             //auxWorldData.SetAuxWorld(outerWorld);
@@ -160,6 +165,9 @@ public class WorldTransitionManager : MonoBehaviour
             else
                 outerWorld = auxWorldData;
         }
+
+        //DebugCanvas.Instance.SetDebugText(outerWorld.WorldId.ToString(), 0);
+        //DebugCanvas.Instance.SetDebugText(innerWorld.WorldId.ToString(), 1);
 
         outerWorld.Cam.enabled = true;
         innerWorld.Cam.enabled = true;
@@ -190,12 +198,26 @@ public class WorldTransitionManager : MonoBehaviour
         else
             outerWorld.CameraTarget.position = allBoxWorlds[innerWorldId].transform.position;
 
+        SetUpPlayerForTransition();
+
         if (Application.isPlaying)
             yield return PerformTransition(outerWorld, innerWorld, reverse);
     }
 
+    private void SetUpPlayerForTransition()
+    {
+        //player
+        //playerCamera
+    }
+
+    #endregion
+
+    #region Transition Process
+
     private IEnumerator PerformTransition(WorldData outerWorld, WorldData innerWorld, bool reverse = false)
     {
+        //DebugCanvas.Instance.SetDebugText(innerWorld.WorldId.ToString());
+
         // Hacer transparentes los world cubes
         //yield return ModifyTransparentCubes(outerWorldId, innerWorldId, true, reverse);
         StartCoroutine(ModifyTransparentCubes(outerWorld, innerWorld, true, reverse));
@@ -295,6 +317,8 @@ public class WorldTransitionManager : MonoBehaviour
         innerWorld.WorldZoom.localScale = Vector3.one * scale;
     }
 
+    #endregion
+
     #region Utils
 
     private int GetInnerWorldLayer()
@@ -339,3 +363,27 @@ public class WorldTransitionManager : MonoBehaviour
 
 #endif
 }
+
+
+
+//IEnumerator DebugDelay()
+//{
+//    yield return new WaitForSeconds(.5f);
+
+//    yield return SwapToOutsideWorld(WorldId.redWorld);
+
+//    yield return new WaitForSeconds(.5f);
+
+//    yield return SwapToInnerWorld(WorldId.blueWorld);
+
+//    while (true)
+//    {
+//        yield return new WaitForSeconds(.5f);
+
+//        yield return SwapToInnerWorld(WorldId.redWorld);
+
+//        yield return new WaitForSeconds(.5f);
+
+//        yield return SwapToInnerWorld(WorldId.blueWorld);
+//    }
+//}
