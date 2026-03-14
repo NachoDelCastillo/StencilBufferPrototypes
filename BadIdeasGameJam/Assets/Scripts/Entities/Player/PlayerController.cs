@@ -3,7 +3,6 @@ using Core.CustomInput;
 using Game.Entities.Base;
 using Game.Entities.Player.States;
 using UnityEngine;
-using Game.Gameplay;
 
 namespace Game.Entities.Player
 {
@@ -18,8 +17,6 @@ namespace Game.Entities.Player
 
         private PlayerInputHandler inputHandler;
         private EntityGfxTransform gfxTransform;
-        private CameraSimpleBehaviour cameraBehaviour;
-
         public PlayerStats Stats => stats;
 
         /// <summary>
@@ -35,11 +32,10 @@ namespace Game.Entities.Player
         /// Inicializa el controlador con el input y el componente de movimiento.
         /// Registra los estados de esta entidad.
         /// </summary>
-        public void Initialize(EntityGfxTransform gfxTransform, CameraSimpleBehaviour cameraBehaviour, EntityMovementComponent moveComponent)
+        public void Initialize(EntityGfxTransform gfxTransform, EntityMovementComponent moveComponent)
         {
             this.inputHandler = PlayerInputHandler.Instance;
             this.gfxTransform = gfxTransform;
-            this.cameraBehaviour = cameraBehaviour;
 
             base.Initialize(moveComponent);
         }
@@ -65,7 +61,7 @@ namespace Game.Entities.Player
         /// </summary>
         protected override PlayerContext CreateContext(StateMachine stateMachine)
         {
-            return new PlayerContext(stats, inputHandler, moveComponent, gfxTransform, cameraBehaviour, stateMachine);
+            return new PlayerContext(stats, inputHandler, moveComponent, gfxTransform, stateMachine);
         }
 
         #endregion

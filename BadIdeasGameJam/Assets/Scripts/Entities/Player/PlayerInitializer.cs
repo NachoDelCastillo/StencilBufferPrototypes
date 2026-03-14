@@ -1,7 +1,6 @@
 using Core.CustomInput;
 using Game.Entities.Base;
 using Game.Entities.Player.Animation;
-using Game.Gameplay;
 using UnityEngine;
 
 namespace Game.Entities.Player
@@ -46,7 +45,7 @@ namespace Game.Entities.Player
             playerShadow = GetComponentInChildren<PlayerShadow>();
 
             // Inicializa PlayerController con todos los componentes necesarios
-            entityController.Initialize(gfxTransform, FindAnyObjectByType<CameraSimpleBehaviour>(), moveComponent);
+            entityController.Initialize(gfxTransform, moveComponent);
 
             // Inicializa la sincronización de animaciones
             animationSync.Initialize(entityController);

@@ -4,7 +4,6 @@ using Game.Entities.Base;
 using Game.Entities.Player.States;
 using UnityEngine;
 using System;
-using Game.Gameplay;
 
 namespace Game.Entities.Player
 {
@@ -20,7 +19,6 @@ namespace Game.Entities.Player
         public PlayerInputHandler InputComponent { get; private set; }
         public EntityMovementComponent MoveComponent { get; private set; }
         public EntityGfxTransform GfxTransform { get; private set; }
-        public CameraSimpleBehaviour CameraBehaviour { get; private set; }
         public PlayerEvents PlayerEvents { get; set; } = new();
 
         // Input Buffers
@@ -45,15 +43,13 @@ namespace Game.Entities.Player
         /// <param name="inputComponent">Componente que gestiona el input del jugador.</param>
         /// <param name="stateMachine">Máquina de estados asociada al jugador.</param>
         public PlayerContext(PlayerStats stats, PlayerInputHandler inputComponent, 
-            EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform,
-            CameraSimpleBehaviour cameraBehaviour, StateMachine stateMachine)
-            : base(stateMachine)
+            EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform
+            , StateMachine stateMachine): base(stateMachine)
         {
             Stats = stats;
             InputComponent = inputComponent;
             MoveComponent = moveComponent;
             GfxTransform = gfxTransform;
-            CameraBehaviour = cameraBehaviour;
 
             OnMovementVelocityChanged += UpdateHorizontalMovementEvent;
         }
