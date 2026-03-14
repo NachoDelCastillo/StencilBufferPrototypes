@@ -37,7 +37,6 @@ public class DebugController : MonoBehaviour
 
             if (clickedObject.TryGetComponent(out BoxWorld boxWorld))
             {
-                Debug.Log(boxWorld.gameObject.name);
                 worldTransitionManager.GetInsideBox(boxWorld);
             }
         }
