@@ -14,8 +14,10 @@ namespace Core.Utils
         [Serializable]
         public class Pair<K, V>
         {
+            [SerializeField]
             public K key;
 
+            [SerializeField]
             public V value;
         }
 
@@ -25,24 +27,6 @@ namespace Core.Utils
                 dictionary.Add(new Pair<TKey, TValue> { key = key, value = value });
             else
                 Debug.LogWarning($"Clave duplicada en SimpleSerializedDictionary: {key}");
-        }
-
-        public bool Remove(TKey key)
-        {
-            for (int i = 0; i < dictionary.Count; i++)
-            {
-                if (EqualityComparer<TKey>.Default.Equals(dictionary[i].key, key))
-                {
-                    dictionary.RemoveAt(i);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        public void Clear()
-        {
-            dictionary.Clear();
         }
 
         public bool ContainsKey(TKey key)
@@ -94,7 +78,7 @@ namespace Core.Utils
             {
                 var pair = dictionary.Find(p => EqualityComparer<TKey>.Default.Equals(p.key, key));
                 if (pair == null)
-                    throw new KeyNotFoundException($"Clave no encontrada en SerializedDictionary: {key}");
+                    throw new KeyNotFoundException($"Clave no encontrada en SimpleSerializedDictionary: {key}");
                 return pair.value;
             }
             set
