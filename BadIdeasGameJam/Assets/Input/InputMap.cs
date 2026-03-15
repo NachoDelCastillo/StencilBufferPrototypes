@@ -37,6 +37,24 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""221087bf-f5de-4658-96f0-421afe27db57"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractWithBox"",
+                    ""type"": ""Button"",
+                    ""id"": ""9841d8ba-38a6-4a4b-a2a0-602fa32b38f2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""f1ba0d36-48eb-4cd5-b651-1c94a6531f70"",
@@ -49,15 +67,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""491c168c-ea9f-4d9c-91ac-6de90e5fa4c2"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SkipSong"",
-                    ""type"": ""Button"",
-                    ""id"": ""83c31099-84d6-4917-a1f5-20cc6a745f3f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -222,7 +231,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ffe051ad-ca63-4440-8c3c-ee03ac84c90f"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -265,23 +274,45 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f10fbc88-6eea-42bc-91e3-2b343656d776"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""id"": ""c9ca050d-f653-4d13-a8b0-bec8f2379e7c"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SkipSong"",
+                    ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b3681249-f4e1-4b85-8ada-cc347dec2e1e"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""c7ccca93-d5b0-4152-ac0e-8f6388cae4da"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SkipSong"",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""190dc81f-72ce-4662-97fe-32c773bf8240"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractWithBox"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f39c4e32-c9d2-4570-ac7c-60f1d4a85d71"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractWithBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -618,9 +649,10 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Move = m_PlayerMovement.FindAction("Move", throwIfNotFound: true);
+        m_PlayerMovement_Grab = m_PlayerMovement.FindAction("Grab", throwIfNotFound: true);
+        m_PlayerMovement_InteractWithBox = m_PlayerMovement.FindAction("InteractWithBox", throwIfNotFound: true);
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_Pause = m_PlayerMovement.FindAction("Pause", throwIfNotFound: true);
-        m_PlayerMovement_SkipSong = m_PlayerMovement.FindAction("SkipSong", throwIfNotFound: true);
         // UIControls
         m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
         m_UIControls_Move = m_UIControls.FindAction("Move", throwIfNotFound: true);
@@ -695,17 +727,19 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerMovement;
     private List<IPlayerMovementActions> m_PlayerMovementActionsCallbackInterfaces = new List<IPlayerMovementActions>();
     private readonly InputAction m_PlayerMovement_Move;
+    private readonly InputAction m_PlayerMovement_Grab;
+    private readonly InputAction m_PlayerMovement_InteractWithBox;
     private readonly InputAction m_PlayerMovement_Jump;
     private readonly InputAction m_PlayerMovement_Pause;
-    private readonly InputAction m_PlayerMovement_SkipSong;
     public struct PlayerMovementActions
     {
         private @InputMap m_Wrapper;
         public PlayerMovementActions(@InputMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerMovement_Move;
+        public InputAction @Grab => m_Wrapper.m_PlayerMovement_Grab;
+        public InputAction @InteractWithBox => m_Wrapper.m_PlayerMovement_InteractWithBox;
         public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
         public InputAction @Pause => m_Wrapper.m_PlayerMovement_Pause;
-        public InputAction @SkipSong => m_Wrapper.m_PlayerMovement_SkipSong;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -718,15 +752,18 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Grab.started += instance.OnGrab;
+            @Grab.performed += instance.OnGrab;
+            @Grab.canceled += instance.OnGrab;
+            @InteractWithBox.started += instance.OnInteractWithBox;
+            @InteractWithBox.performed += instance.OnInteractWithBox;
+            @InteractWithBox.canceled += instance.OnInteractWithBox;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
-            @SkipSong.started += instance.OnSkipSong;
-            @SkipSong.performed += instance.OnSkipSong;
-            @SkipSong.canceled += instance.OnSkipSong;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -734,15 +771,18 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Grab.started -= instance.OnGrab;
+            @Grab.performed -= instance.OnGrab;
+            @Grab.canceled -= instance.OnGrab;
+            @InteractWithBox.started -= instance.OnInteractWithBox;
+            @InteractWithBox.performed -= instance.OnInteractWithBox;
+            @InteractWithBox.canceled -= instance.OnInteractWithBox;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
-            @SkipSong.started -= instance.OnSkipSong;
-            @SkipSong.performed -= instance.OnSkipSong;
-            @SkipSong.canceled -= instance.OnSkipSong;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -878,9 +918,10 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     public interface IPlayerMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
+        void OnInteractWithBox(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnSkipSong(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {

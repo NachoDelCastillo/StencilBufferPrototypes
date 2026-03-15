@@ -19,6 +19,7 @@ namespace Game.Entities.Player
 
         private PlayerAnimationSynchronizer animationSync;
         private PlayerGfxTransform gfxTransform;
+        private PlayerGrabInteraction playerGrabInteraction;
         private PlayerSfx playerSfx;
         private PlayerParticleManager playerParticleManager;
         private PlayerShadow playerShadow;
@@ -40,12 +41,13 @@ namespace Game.Entities.Player
             animationSync = GetComponent<PlayerAnimationSynchronizer>();
             playerSfx = GetComponent<PlayerSfx>();
             playerParticleManager = GetComponent<PlayerParticleManager>();
+            playerGrabInteraction = GetComponent<PlayerGrabInteraction>();
 
             gfxTransform = GetComponentInChildren<PlayerGfxTransform>();
             playerShadow = GetComponentInChildren<PlayerShadow>();
 
             // Inicializa PlayerController con todos los componentes necesarios
-            entityController.Initialize(gfxTransform, moveComponent);
+            entityController.Initialize(moveComponent, gfxTransform, playerGrabInteraction);
 
             // Inicializa la sincronización de animaciones
             animationSync.Initialize(entityController);

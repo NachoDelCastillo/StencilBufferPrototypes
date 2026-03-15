@@ -29,11 +29,14 @@ namespace Game.Entities.Player.States
                 return;
             }
 
-            // Transicion a estado de aire
-            ctx.TryAirborne();
+            // Procesar logica de intentar agarrar/soltar items
+            ctx.TryGrabRelease();
 
             // Desacelera al jugador horizontalmente.
             ctx.BrakeHorizontalMovement();
+
+            // Transicion a estado de aire
+            if (ctx.TryAirborne()) return;
 
             // Comprobar salto
             if (ctx.TryJump()) return;

@@ -9,6 +9,8 @@ namespace Core.CustomInput
     public enum PlayerInputAction
     {
         Jump,
+        Grab,
+        InteractWithBox,
         Pause,
         SkipSong
     }
@@ -65,25 +67,15 @@ namespace Core.CustomInput
 
         #region Input Callbacks
 
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            MoveInput = context.ReadValue<Vector2>();
-        }
+        public void OnMove(InputAction.CallbackContext context) => MoveInput = context.ReadValue<Vector2>();
 
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            HandleInputActionState(PlayerInputAction.Jump, context);
-        }
+        public void OnJump(InputAction.CallbackContext context) => HandleInputActionState(PlayerInputAction.Jump, context);
 
-        public void OnPause(InputAction.CallbackContext context)
-        {
-            HandleInputActionState(PlayerInputAction.Pause, context);
-        }
+        public void OnPause(InputAction.CallbackContext context) => HandleInputActionState(PlayerInputAction.Pause, context);
 
-        public void OnSkipSong(InputAction.CallbackContext context)
-        {
-            HandleInputActionState(PlayerInputAction.SkipSong, context);
-        }
+        public void OnGrab(InputAction.CallbackContext context) => HandleInputActionState(PlayerInputAction.Grab, context);
+
+        public void OnInteractWithBox(InputAction.CallbackContext context) => HandleInputActionState(PlayerInputAction.InteractWithBox, context);
 
         #endregion
     }

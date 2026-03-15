@@ -24,6 +24,9 @@ namespace Game.Entities.Player.States
                 return;
             }
 
+            // Procesar logica de intentar agarrar/soltar items
+            ctx.TryGrabRelease();
+
             // Transicion a estado de aire
             if (ctx.TryAirborne()) return;
 

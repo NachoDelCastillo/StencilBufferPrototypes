@@ -32,7 +32,7 @@ namespace Game.Entities.Base
 
         #endregion
 
-        #region Setters
+        #region Public API
 
         public void SetTargetDirectionXZ(Vector3 targetDirection, bool slowedRotation = false)
         {
@@ -57,6 +57,8 @@ namespace Game.Entities.Base
         }
         public void JumpTo(Vector3 targetPosition) => transform.DOJump(targetPosition, .5f, 1, .6f);
         public void JumpToInitPos() => transform.DOLocalJump(Vector3.zero, .5f, 1, .6f);
+
+        public Vector3 GetTargetForwardDirection() => Quaternion.Euler(targetRotation) * Vector3.forward;
 
         #endregion
 

@@ -65,6 +65,12 @@ public class WorldTransitionManager : MonoBehaviour
 
     #region Transition Setup
 
+    public void GetInsideBox(WorldId worldId)
+    {
+        if (!CheckValidTransition()) return;
+        StartCoroutine(GetInsideBox_Coroutine(allBoxWorlds[worldId]));
+    }
+
     public void GetInsideBox(BoxWorld boxWorld)
     {
         if (!CheckValidTransition()) return;
@@ -110,8 +116,6 @@ public class WorldTransitionManager : MonoBehaviour
     private void SetWorld(WorldId worldId)
     {
         currentWorldId = worldId;
-
-        DebugCanvas.Instance.SetDebugText(currentWorldId.ToString());
 
         foreach (var pair in allWorldsData)
         {
@@ -202,20 +206,24 @@ public class WorldTransitionManager : MonoBehaviour
     {
         player.EnterTeleport();
 
-        Vector3 offset = player.transform.position - Camera.main.transform.position;
-        player.transform.position = playerCamera.transform.position + offset;
-
-        //yield return new WaitForSeconds(1);
-
         // Teletransportar al player al enter spot del mundo al que estas entrando
         if (!reverse)
         {
+            Transform refCam = outerWorld.Cam.transform;
+            if (outerWorld.WorldId == innerWorld.WorldId)
+                refCam = innerWorld.Cam.transform;
+
+            Vector3 offset = player.transform.position - refCam.position;
+            player.transform.position = playerCamera.transform.position + offset;
+
             Vector3 landingSpotInFakeWorld = playerCamera.transform.position + minOffsetFromCamera; // + worldData.EnterSpot.localPosition;
 
             float duration = 2.5f;
             player.transform.DOMove(landingSpotInFakeWorld, duration).SetEase(Ease.InOutCubic);
             //player.transform.DORotate(player.transform.rotation.eulerAngles + Vector3.up * 360 * 2, duration, RotateMode.FastBeyond360);
             //player.transform.DORotate(Vector3.up * 360 * 3, duration, RotateMode.FastBeyond360);
+
+            DebugCanvas.Instance.SetDebugText(landingSpotInFakeWorld.ToString(), 3);
 
             yield return new WaitForSeconds(3.6f);
 
@@ -226,12 +234,21 @@ public class WorldTransitionManager : MonoBehaviour
         // Teletransportar al player a encima de la caja del mundo del que has salido
         else
         {
+            Transform refCam = innerWorld.Cam.transform;
+            if (outerWorld.WorldId == innerWorld.WorldId)
+                refCam = outerWorld.Cam.transform;
+
+            Vector3 offset = player.transform.position - refCam.position;
+            player.transform.position = playerCamera.transform.position + offset;
+
             Vector3 landingSpotInFakeWorld = playerCamera.transform.position + minOffsetFromCamera + Vector3.up * 1;
 
             float duration = 3.5f;
             player.transform.DOMove(landingSpotInFakeWorld, duration).SetEase(Ease.InOutCubic);
             //player.transform.DORotate(player.transform.rotation.eulerAngles + Vector3.up * 360 * 2, duration, RotateMode.FastBeyond360);
             //player.transform.DORotate(Vector3.up * 360 * 3, duration, RotateMode.FastBeyond360);
+
+            DebugCanvas.Instance.SetDebugText(landingSpotInFakeWorld.ToString(), 3);
 
             yield return new WaitForSeconds(4.6f);
 

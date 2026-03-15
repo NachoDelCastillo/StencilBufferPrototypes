@@ -19,6 +19,7 @@ namespace Game.Entities.Player
         public PlayerInputHandler InputComponent { get; private set; }
         public EntityMovementComponent MoveComponent { get; private set; }
         public EntityGfxTransform GfxTransform { get; private set; }
+        public PlayerGrabInteraction PlayerGrabInteraction { get; private set; }
         public PlayerEvents PlayerEvents { get; set; } = new();
 
         // Input Buffers
@@ -42,14 +43,16 @@ namespace Game.Entities.Player
         /// <param name="stats">Estadísticas del jugador.</param>
         /// <param name="inputComponent">Componente que gestiona el input del jugador.</param>
         /// <param name="stateMachine">Máquina de estados asociada al jugador.</param>
-        public PlayerContext(PlayerStats stats, PlayerInputHandler inputComponent, 
-            EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform
-            , StateMachine stateMachine): base(stateMachine)
+        public PlayerContext(PlayerStats stats, PlayerInputHandler inputComponent,
+            EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform,
+            PlayerGrabInteraction playerGrabInteraction, StateMachine stateMachine)
+                : base(stateMachine)
         {
             Stats = stats;
             InputComponent = inputComponent;
             MoveComponent = moveComponent;
             GfxTransform = gfxTransform;
+            PlayerGrabInteraction = playerGrabInteraction;
 
             OnMovementVelocityChanged += UpdateHorizontalMovementEvent;
         }
@@ -252,6 +255,21 @@ namespace Game.Entities.Player
         public void ExitTeleport()
         {
             StateMachine.ChangeState<AirPlayerState>();
+        }
+
+        #endregion
+
+        #region Grab
+
+        public void TryGrabRelease()
+        {
+            if (InputComponent.IsPressed(PlayerInputAction.Grab))
+            {
+                if (PlayerGrabInteraction.IsHolding)
+                    PlayerGrabInteraction.Release(GfxTransform.GetTargetForwardDirection());
+                else
+                    PlayerGrabInteraction.TryGrab();
+            }
         }
 
         #endregion
