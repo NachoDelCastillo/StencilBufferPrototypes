@@ -17,7 +17,7 @@ namespace Game.Entities.Player
 
         private PlayerInputHandler inputHandler;
         private EntityGfxTransform gfxTransform;
-        private PlayerGrabInteraction playerGrabInteraction;
+        private PlayerInteractions playerGrabInteraction;
         public PlayerStats Stats => stats;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Game.Entities.Player
         /// Inicializa el controlador con el input y el componente de movimiento.
         /// Registra los estados de esta entidad.
         /// </summary>
-        public void Initialize(EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform, PlayerGrabInteraction playerGrabInteraction)
+        public void Initialize(EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform, PlayerInteractions playerGrabInteraction)
         {
             this.inputHandler = PlayerInputHandler.Instance;
             this.gfxTransform = gfxTransform;

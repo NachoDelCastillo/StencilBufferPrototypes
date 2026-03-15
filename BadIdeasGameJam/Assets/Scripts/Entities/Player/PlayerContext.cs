@@ -19,7 +19,7 @@ namespace Game.Entities.Player
         public PlayerInputHandler InputComponent { get; private set; }
         public EntityMovementComponent MoveComponent { get; private set; }
         public EntityGfxTransform GfxTransform { get; private set; }
-        public PlayerGrabInteraction PlayerGrabInteraction { get; private set; }
+        public PlayerInteractions PlayerGrabInteraction { get; private set; }
         public PlayerEvents PlayerEvents { get; set; } = new();
 
         // Input Buffers
@@ -45,7 +45,7 @@ namespace Game.Entities.Player
         /// <param name="stateMachine">Máquina de estados asociada al jugador.</param>
         public PlayerContext(PlayerStats stats, PlayerInputHandler inputComponent,
             EntityMovementComponent moveComponent, EntityGfxTransform gfxTransform,
-            PlayerGrabInteraction playerGrabInteraction, StateMachine stateMachine)
+            PlayerInteractions playerGrabInteraction, StateMachine stateMachine)
                 : base(stateMachine)
         {
             Stats = stats;
@@ -270,6 +270,11 @@ namespace Game.Entities.Player
                 else
                     PlayerGrabInteraction.TryGrab();
             }
+        }
+
+        public void TryTeleport()
+        {
+            PlayerGrabInteraction.TryTeleport();
         }
 
         #endregion

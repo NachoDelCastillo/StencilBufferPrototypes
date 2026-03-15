@@ -1,9 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class GrabbableItem : MonoBehaviour, IGrabbable
+[RequireComponent(typeof(BoxWorld))]
+public class GrabbableBox : MonoBehaviour, IGrabbable
 {
     private Rigidbody rb;
+    private BoxWorld boxWorld;
 
     #region Initialize
 
@@ -11,6 +13,7 @@ public class GrabbableItem : MonoBehaviour, IGrabbable
     private void Initialize()
     {
         rb = GetComponent<Rigidbody>();
+        boxWorld = GetComponent<BoxWorld>();
     }
 
     #endregion
@@ -24,7 +27,7 @@ public class GrabbableItem : MonoBehaviour, IGrabbable
 
     public void OnRelease(Vector3 releaseForce)
     {
-        transform.SetParent(null);
+        transform.SetParent(boxWorld.WorldTransitionManager.AllWorldsData[boxWorld.InsideWorldId].Enviroment);
         rb.isKinematic = false;
         rb.AddForce(releaseForce, ForceMode.Impulse);
     }

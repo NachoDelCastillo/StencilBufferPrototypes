@@ -2,7 +2,13 @@ using UnityEngine;
 
 namespace Game.Entities.Player
 {
-    public class PlayerGrabInteraction : MonoBehaviour
+    /// <summary>
+    /// Esta clase centraliza toda la lógica de interacción del jugador,
+    /// Gestiona las interacciones del jugador con el mundo, incluyendo:
+    /// 1. La mecánica de agarrar objetos.
+    /// 2. Entrar y salir de cajas (<c>BoxWorld</c>).
+    /// </summary>
+    public class PlayerInteractions : MonoBehaviour
     {
         [Header("Parameters")]
         [SerializeField] private Vector2 throwForce = new Vector2(2, 1);
@@ -14,6 +20,8 @@ namespace Game.Entities.Player
         // Variables
         private IGrabbable currentObject;
         public bool IsHolding => currentObject != null;
+
+        #region Grab
 
         public void TryGrab()
         {
@@ -41,5 +49,21 @@ namespace Game.Entities.Player
             currentObject.OnRelease(finalThrowForce);
             currentObject = null;
         }
+
+        #endregion
+
+        #region Teleport
+
+        public void TryTeleport()
+        {
+            IGrabbable grabbable = triggerSensor.GetClosestComponent<IGrabbable>(grabSpot.position);
+
+            if (grabbable != null && (grabbable as Component).TryGetComponent<BoxWorld>(out BoxWorld boxWorld))
+            {
+                boxWorld.WorldTransitionManager.GetInsideBox(boxWorld);
+            }
+        }
+
+        #endregion
     }
 }

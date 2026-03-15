@@ -28,6 +28,7 @@ public class WorldTransitionManager : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private SerializedDictionary<WorldId, WorldData> allWorldsData;
     [SerializeField] private SerializedDictionary<WorldId, BoxWorld> allBoxWorlds;
+    public SerializedDictionary<WorldId, WorldData> AllWorldsData => allWorldsData;
 
     [Header("Debug")]
 
@@ -408,6 +409,9 @@ public class WorldTransitionManager : MonoBehaviour
         // Settear los WorldId de cada worldData, de esta forma solo los setteo una unica vez pero los worldData saben que id representan
         foreach (var pair in allWorldsData)
             pair.Value.SetWorldId(pair.Key);
+
+        foreach (var pair in allBoxWorlds)
+            pair.Value.SetWorldTransitionManager(this);
     }
 
 #endif

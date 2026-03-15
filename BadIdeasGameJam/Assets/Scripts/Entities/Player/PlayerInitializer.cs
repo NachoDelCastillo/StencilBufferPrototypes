@@ -19,7 +19,7 @@ namespace Game.Entities.Player
 
         private PlayerAnimationSynchronizer animationSync;
         private PlayerGfxTransform gfxTransform;
-        private PlayerGrabInteraction playerGrabInteraction;
+        private PlayerInteractions playerGrabInteraction;
         private PlayerSfx playerSfx;
         private PlayerParticleManager playerParticleManager;
         private PlayerShadow playerShadow;
@@ -41,7 +41,7 @@ namespace Game.Entities.Player
             animationSync = GetComponent<PlayerAnimationSynchronizer>();
             playerSfx = GetComponent<PlayerSfx>();
             playerParticleManager = GetComponent<PlayerParticleManager>();
-            playerGrabInteraction = GetComponent<PlayerGrabInteraction>();
+            playerGrabInteraction = GetComponent<PlayerInteractions>();
 
             gfxTransform = GetComponentInChildren<PlayerGfxTransform>();
             playerShadow = GetComponentInChildren<PlayerShadow>();
